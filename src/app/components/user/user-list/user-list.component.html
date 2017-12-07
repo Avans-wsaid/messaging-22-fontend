@@ -1,0 +1,26 @@
+<h1>{{title}}</h1>
+
+<div *ngIf="users  === undefined || users.length == 0; else enoughUsers">
+  No users have been found.
+</div>
+<ng-template #enoughUsers>
+  <div *ngIf="users  !== undefined || users.length > 0">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <td>First Name</td>
+        <td>Last Name</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users, let i = index">
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td><a routerLink="/users/{{user._id}}/edit" class="btn btn-info">Edit</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
+<a routerLink="/users/create" class="btn btn-primary" style="margin-top: 20px;">Create User</a>

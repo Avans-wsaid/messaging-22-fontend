@@ -1,0 +1,56 @@
+<h1>{{title}}</h1>
+
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="userForm" (ngSubmit)="onSaveUser()">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              class="form-control">
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="form-group" [ngClass]="{'has-error':!userForm.controls['lastName'].valid && userForm.controls['lastName'].touched}">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="email">E-mail address</label>
+            <input
+              type="text"
+              id="email"
+              formControlName="email"
+              class="form-control">
+            <span *ngIf="userForm.hasError('email', 'email') && userForm.get('email').touched">
+              Please enter a valid email.
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!userForm.valid">Save</button>
+          <button type="button" class="btn btn-warning" (click)="onCancel()">Cancel</button>
+          <button class="btn btn-danger" (click)="onDeleteUser()">Delete</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
