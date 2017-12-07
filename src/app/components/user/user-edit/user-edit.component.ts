@@ -46,11 +46,7 @@ export class UserEditComponent implements OnInit {
       this.title = 'Edit a user';
       this.userService.getUser(this.id)
         .then((user) => {
-          this.userForm = new FormGroup({
-            'firstName': new FormControl(user.firstName, Validators.required),
-            'lastName': new FormControl(user.lastName, Validators.required),
-            'email': new FormControl(user.email, [Validators.required, Validators.email])
-          });
+          this.userForm.setValue({firstName: user.firstName, lastName: user.lastName, email: user.email});
         })
         .catch(error => console.log(error));
     }
