@@ -50,8 +50,7 @@ export class ThreadService {
       });
   }
   public storeThreads(threads: Thread, id: string) {
-    threads.user = id;
-    return this.http.post(this.userUrl + '/' + id + '/threads', threads, { headers: this.headers });
+    return this.http.post(this.userUrl + '/' + id + '/threads', {title: threads.title, content: threads.content, user: id}, { headers: this.headers });
   }
   public editThread(id: string, thread: Thread) {
     return this.http.put(this.serverUrl + '/' + id, thread, { headers: this.headers });

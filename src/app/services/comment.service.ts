@@ -52,8 +52,7 @@ export class CommentService {
       });
   }
   public storeComments(comments: Comment, id: string, userId: string) {
-    comments.user = userId;
-    return this.http.post(this.threadUrl + '/' + id + '/comments', comments, { headers: this.headers });
+    return this.http.post(this.threadUrl + '/' + id + '/comments', {content: comments.content, user: userId}, { headers: this.headers });
   }
   public notifyOnCommentSave() {
       this.notify.next();
