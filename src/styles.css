@@ -13,3 +13,6 @@
 .navbar {
   border-radius: 0px;
 }
+.row_selected{
+  background-color: #f5f5f5;
+}

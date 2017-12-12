@@ -11,8 +11,6 @@ import {UserService} from '../../../services/user.service';
   styleUrls: ['./user-edit.component.css']
 })
 export class UserEditComponent implements OnInit {
-  user: User;
-
   id: string;
   editMode = false;
   userForm: FormGroup;
@@ -56,25 +54,22 @@ export class UserEditComponent implements OnInit {
     if (this.editMode) {
       this.userService.editUser(this.id, this.userForm.value)
         .subscribe(
-          (response) => console.log(response),
+          (response) => this.router.navigate(['/']),
           (error) => console.log(error)
         );
-      this.router.navigate(['/']);
     } else {
       this.userService.storeUsers(this.userForm.value)
         .subscribe(
-          (response) => console.log(response),
+          (response) => this.router.navigate(['/']),
           (error) => console.log(error)
         );
-      this.router.navigate(['/']);
     }
   }
   onDeleteUser() {
     this.userService.deleteUser(this.id)
       .subscribe(
-        (response) => console.log(response),
+        (response) => this.router.navigate(['/']),
         (error) => console.log(error)
       );
-    this.router.navigate(['/']);
   }
 }

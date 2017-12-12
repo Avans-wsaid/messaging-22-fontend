@@ -1,0 +1,7 @@
+.navbar-nav>li>a, .navbar-brand, .navbar-text {
+  color: #000;
+}
+.navbar-toggle .icon-bar {
+  background: #000;
+}
+

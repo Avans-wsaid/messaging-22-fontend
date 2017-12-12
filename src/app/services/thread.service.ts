@@ -4,58 +4,59 @@ import { environment } from '../../environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-import { User } from '../models/user.model';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import {Thread} from '../models/thread.model';
 
 @Injectable()
-export class UserService {
+export class ThreadService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
-  private serverUrl = environment.serverUrl + '/users';
-  private users: User[] = [];
-
+  private serverUrl = environment.serverUrl + '/threads';
+  private userUrl = environment.serverUrl + '/users';
+  private threads: Thread[] = [];
   constructor(private http: Http) { }
-  public getUsers(): Promise<User[]> {
+  public getThreads(): Promise<Thread[]> {
     return this.http.get(this.serverUrl, { headers: this.headers })
       .toPromise()
       .then(response => {
         console.dir(response.json());
-        return response.json() as User[];
+        return response.json() as Thread[];
       })
       .catch(error => {
         return this.handleError(error);
       });
   }
-  public getUsersByName(name: string): Promise<User[]> {
-    return this.http.get(this.serverUrl + '/search' , { headers: this.headers, params: {name: name} })
+  public getUserThreads(id: string): Promise<Thread[]> {
+    return this.http.get(this.userUrl + '/' + id + '/threads', { headers: this.headers })
       .toPromise()
       .then(response => {
         console.dir(response.json());
-        return response.json() as User[];
+        return response.json() as Thread[];
       })
       .catch(error => {
         return this.handleError(error);
       });
   }
-  public getUser(id: string): Promise<User> {
+  public getThread(id: string): Promise<Thread> {
     return this.http.get(this.serverUrl + '/' + id, { headers: this.headers })
       .toPromise()
       .then(response => {
         console.dir(response.json());
-        return response.json() as User;
+        return response.json() as Thread;
       })
       .catch(error => {
         return this.handleError(error);
       });
   }
-  public storeUsers(users: User) {
-    return this.http.post(this.serverUrl, users, { headers: this.headers });
+  public storeThreads(threads: Thread, id: string) {
+    threads.user = id;
+    return this.http.post(this.userUrl + '/' + id + '/threads', threads, { headers: this.headers });
   }
-  public editUser(id: string, user: User) {
-    return this.http.put(this.serverUrl + '/' + id, user, { headers: this.headers });
+  public editThread(id: string, thread: Thread) {
+    return this.http.put(this.serverUrl + '/' + id, thread, { headers: this.headers });
   }
-  public deleteUser(id: string) {
+  public deleteThread(id: string) {
     return this.http.delete(this.serverUrl + '/' + id, { headers: this.headers });
   }
   private handleError(error: any): Promise<any> {

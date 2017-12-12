@@ -4,58 +4,64 @@ import { environment } from '../../environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-import { User } from '../models/user.model';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import {Comment} from '../models/comment.model';
+import {Subject} from "rxjs/Subject";
 
 @Injectable()
-export class UserService {
+export class CommentService {
 
   private headers = new Headers({ 'Content-Type': 'application/json' });
-  private serverUrl = environment.serverUrl + '/users';
-  private users: User[] = [];
-
+  private serverUrl = environment.serverUrl + '/comments';
+  private threadUrl = environment.serverUrl + '/threads';
+  private notify = new Subject<any>();
+  notifyObservable$ = this.notify.asObservable();
   constructor(private http: Http) { }
-  public getUsers(): Promise<User[]> {
+  public getComments(): Promise<Comment[]> {
     return this.http.get(this.serverUrl, { headers: this.headers })
       .toPromise()
       .then(response => {
         console.dir(response.json());
-        return response.json() as User[];
+        return response.json() as Comment[];
       })
       .catch(error => {
         return this.handleError(error);
       });
   }
-  public getUsersByName(name: string): Promise<User[]> {
-    return this.http.get(this.serverUrl + '/search' , { headers: this.headers, params: {name: name} })
+  public getThreadComments(id: string): Promise<Comment[]> {
+    return this.http.get(this.threadUrl + '/' + id + '/comments', { headers: this.headers })
       .toPromise()
       .then(response => {
         console.dir(response.json());
-        return response.json() as User[];
+        return response.json() as Comment[];
       })
       .catch(error => {
         return this.handleError(error);
       });
   }
-  public getUser(id: string): Promise<User> {
+  public getComment(id: string): Promise<Comment> {
     return this.http.get(this.serverUrl + '/' + id, { headers: this.headers })
       .toPromise()
       .then(response => {
         console.dir(response.json());
-        return response.json() as User;
+        return response.json() as Comment;
       })
       .catch(error => {
         return this.handleError(error);
       });
   }
-  public storeUsers(users: User) {
-    return this.http.post(this.serverUrl, users, { headers: this.headers });
+  public storeComments(comments: Comment, id: string, userId: string) {
+    comments.user = userId;
+    return this.http.post(this.threadUrl + '/' + id + '/comments', comments, { headers: this.headers });
   }
-  public editUser(id: string, user: User) {
-    return this.http.put(this.serverUrl + '/' + id, user, { headers: this.headers });
+  public notifyOnCommentSave() {
+      this.notify.next();
   }
-  public deleteUser(id: string) {
+  public editComment(id: string, comment: Comment) {
+    return this.http.put(this.serverUrl + '/' + id, comment, { headers: this.headers });
+  }
+  public deleteComment(id: string) {
     return this.http.delete(this.serverUrl + '/' + id, { headers: this.headers });
   }
   private handleError(error: any): Promise<any> {
