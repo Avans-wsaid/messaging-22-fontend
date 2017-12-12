@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1>{{title}}</h1>
+    <div class="btn_hld">
+      <button *ngIf="!userMode" type="button" class="btn btn-warning" (click)="onCancel()">Cancel</button>
+      <button *ngIf="!userMode" class="btn btn-danger" (click)="onDeleteComment()">Delete</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="commentForm" (ngSubmit)="onSaveComment()">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group" [ngClass]="{'has-error':!commentForm.controls['content'].valid && commentForm.controls['content'].touched}">
+            <label for="content">Content</label>
+            <textarea
+              type="text"
+              id="content"
+              formControlName="content"
+              class="form-control">
+            </textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!commentForm.valid">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

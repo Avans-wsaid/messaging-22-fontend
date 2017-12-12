@@ -1,0 +1,10 @@
+<div id="custom-search-input">
+  <div class="input-group col-md-12">
+    <input type="text" class="form-control input-lg" placeholder="Search by name" name="name" [(ngModel)]="query" />
+    <span class="input-group-btn">
+        <button (click)="onSearch(query)" class="btn btn-info btn-lg" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+        </button>
+    </span>
+  </div>
+</div>

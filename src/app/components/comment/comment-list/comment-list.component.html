@@ -1,0 +1,25 @@
+<h1>{{title}}</h1>
+
+<div *ngIf="comments  === undefined || comments.length == 0; else enoughComments">
+  No comments have been found.
+</div>
+<ng-template #enoughComments>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Content</td>
+      <td>User</td>
+      <td>Edit</td>
+      <td>Permalink</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let comment of comments" appTableRow>
+      <td>{{comment.content}}</td>
+      <td><a routerLink="/users/{{comment.user._id}}">{{comment.user.email}}</a></td>
+      <td><a routerLink="/comments/{{comment._id}}/edit" class="btn btn-info">Edit</a></td>
+      <td><a routerLink="/comments/{{comment._id}}">Permalink</a></td>
+    </tr>
+    </tbody>
+  </table>
+</ng-template>

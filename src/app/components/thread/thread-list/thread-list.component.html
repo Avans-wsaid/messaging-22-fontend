@@ -1,0 +1,27 @@
+<h1>{{amount}} {{title}}</h1>
+<div *ngIf="threads  === undefined || threads.length == 0; else enoughThreads">
+  {{subtitle}}
+</div>
+<ng-template #enoughThreads>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Title</td>
+      <td *ngIf="!userMode">Author</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let thread of threads" appTableRow>
+      <td>
+        <a *ngIf="userMode" routerLink="/threads/{{thread._id}}/{{id}}">{{thread.title}}</a>
+        <a *ngIf="!userMode" routerLink="/threads/{{thread._id}}/{{thread.user._id}}">{{thread.title}}</a><br>
+        {{thread.content}}
+      </td>
+      <td *ngIf="!userMode">{{thread.user.email}}</td>
+      <td><a routerLink="/threads/{{thread._id}}/edit" class="btn btn-info">Edit</a></td>
+    </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<a *ngIf="userMode" routerLink="/threads/create/{{id}}" class="btn btn-primary" style="margin-top: 20px;">Create Thread</a>
